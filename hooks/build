@@ -1,0 +1,8 @@
+#!/bin/bash
+
+if [ $DOCKER_TAG != "latest" ]
+then
+  MLFLOW_VERSION=$DOCKER_TAG
+fi
+
+docker build --build-arg MLFLOW_VERSION=$MLFLOW_VERSION -t $IMAGE_NAME -f $DOCKERFILE_PATH .
