@@ -1,4 +1,4 @@
-# Docker Image for MLflow
+# Docker Image for MLflow tracking server
 
 ## Environment Variables
 
@@ -17,3 +17,22 @@
 ### MLflow specific
 - Further more MLflow requires additional variables, e.g. a S3 Endpoint URI and credentials.
   Look for MLflow-specific variables at https://www.mlflow.org/docs/latest/tracking.html#mlflow-tracking-servers.
+  
+## Example: Docker compose
+```yaml
+version: "3.6"
+services:
+  some-mlflow-tracking:
+    image: "tnte/mlflow-tracking-server"
+    container_name: "some-mlflow-tracking"
+    volumes:
+      - "~/mlflow:/data"
+    ports:
+      - 127.0.0.1:8080:5000
+    environment:
+      - BACKEND_STORE_URI=${BACKEND_STORE_URI:-sqlite:///data/sqlite.db}
+      - BUCKET_URI_OR_LOCAL_PATH=${BUCKET_URI_OR_LOCAL_PATH:-/data/mlruns}
+      - MLFLOW_S3_ENDPOINT_URL=$MLFLOW_S3_ENDPOINT_URL
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+```
